@@ -58,7 +58,6 @@ color.addEventListener("input", e => {
 const antiguoYear = coches.reduce((accum, current) => {
     return current.year < accum.year? current : accum
 })
-
 //Sacar el año mas nuevo
 const nuevoYear = coches.reduce((accum, current) => {
     return current.year > accum.year? current : accum
@@ -80,7 +79,7 @@ function buscarCoches() {
         .filter(coche => filtrarPuertas(coche))
         .filter(coche => filtrarTransmision(coche))
         .filter(coche => filtrarColor(coche))
-    console.log(cochesSeleccionados)
+        mostrarCoches(cochesSeleccionados)
 }
 
 
@@ -105,15 +104,15 @@ function filtrarYear(coche){
 
 function filtrarPrecioMinimo(coche){
     if (cochesBuscar.precioMinimo){
-        return cochesBuscar.precioMinimo <= `${coche.precio}`
+        return cochesBuscar.precioMinimo <= coche.precio
     }else{
         return coche
     }
 }
 
 function filtrarPrecioMaximo(coche){
-    if (cochesBuscar.precioMinimo){
-        return cochesBuscar.precioMaximo >= `${coche.precio}`
+    if (cochesBuscar.precioMaximo){
+        return cochesBuscar.precioMaximo >= coche.precio
     }else{
         return coche
     }
@@ -141,4 +140,75 @@ function filtrarColor(coche){
     }else{
         return coche
     }
+}
+function crearTabla() {
+    const contenedor = document.querySelector("#resultado")
+    const tabla = document.createElement("table")
+    const tablaHead = document .createElement("thead")
+    const trHead = document.createElement("tr")
+    const tablaBody = document.createElement("tbody")
+    const marca = document.createElement("th")
+    marca.textContent = "MARCA"
+    const year = document.createElement("th")
+    year.textContent = "AÑO"
+    const precio = document.createElement("th")
+    precio.textContent = "PRECIO"
+    const puertas = document.createElement("th")
+    puertas.textContent = "PUERTAS"
+    const transmision = document.createElement("th")
+    transmision.textContent = "TRANSMISION"
+    const color = document.createElement("th")
+    color.textContent = "COLOR"
+    //Agregamos los titulos a la fila
+    trHead.appendChild(marca)
+    trHead.appendChild(year)
+    trHead.appendChild(precio)
+    trHead.appendChild(puertas)
+    trHead.appendChild(transmision)
+    trHead.appendChild(color)
+    //Agregamos la fila al thead, tabla y contenedor
+    tablaHead.appendChild(trHead)
+    tabla.appendChild(tablaHead)
+    tabla.appendChild(tablaBody)
+    tabla.classList.add("u-full-width")
+    contenedor.appendChild(tabla)
+    contenedor.classList.add("espaciado-lados")
+}
+crearTabla()
+
+//Insercción de listado de coches en la tabla cada vez que buscamos
+function mostrarCoches(listaCoches) {
+    const tbody = document.querySelector("tbody")
+    limpiarHTML()
+    listaCoches.forEach(coche => {
+        //Creamos  la fila
+        const tr = document .createElement("tr")
+        //Creamos los elementos
+        const tdMarca = document.createElement("td")
+        tdMarca.textContent = coche.marca
+        const tdYear = document.createElement("td")
+        tdYear.textContent = coche.year
+        const tdPrecio = document.createElement("td")
+        tdPrecio.textContent = coche.precio
+        const tdPuertas = document.createElement("td")
+        tdPuertas.textContent = coche.puertas
+        const tdTransmision = document.createElement("td")
+        tdTransmision.textContent = coche.transmision
+        const tdColor = document.createElement("td")
+        tdColor.textContent = coche.color
+        //Agregamos los elementos a la fila
+        tr.appendChild(tdMarca)
+        tr.appendChild(tdYear)
+        tr.appendChild(tdPrecio)
+        tr.appendChild(tdPuertas)
+        tr.appendChild(tdTransmision)
+        tr.appendChild(tdColor)
+        //Agregamos la fila al body
+        tbody.appendChild(tr)
+    })
+}
+
+function limpiarHTML() {
+    const tbody = document.querySelector("tbody")
+    tbody.innerHTML = "" //Reseteamos la tabla.
 }
